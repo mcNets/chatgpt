@@ -3,8 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ChatGpt;
 
-internal class CompletionModel
-{
+internal class CompletionModel {
     /// <summary>
     /// model / string  / Required
     /// 

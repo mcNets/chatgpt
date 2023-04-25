@@ -1,66 +1,60 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace ChatGpt
-{
-    internal class Program
-    {
-        static async Task Main(string[] args)
-        {
+namespace ChatGpt;
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+internal class Program {
 
-            var service = new OpenAIService();
+    static async Task Main(string[] args) {
 
-            while (true)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine();
-                Console.Write("Enter question: ");
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                var question = Console.ReadLine();
-                if (question?.ToLower() == "exit")
-                    return;
+        var service = new OpenAIService();
 
-                CompletionModel message = new CompletionModel();
-                message.Prompt = question;
-                message.Temperature = 0.8;
-                message.MaxTokens = 1000;
+        while (true) {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            Console.Write("Enter question: ");
 
-                var url = config["OpenAi:Url"];
-                if (string.IsNullOrEmpty(url))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("URL cannot have a null value.");
-                    return;
-                }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            var question = Console.ReadLine();
+            if (question?.ToLower() == "exit")
+                return;
 
-                var apikey = config["OpenAi:ApiKey"];
-                if (string.IsNullOrEmpty(apikey))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ApiKey missing");
-                    return;
-                }
+            CompletionModel message = new CompletionModel();
+            message.Prompt = question;
+            message.Temperature = 0.8;
+            message.MaxTokens = 1000;
 
-                var result = await service.SendMessageAsync(message, url, apikey);
+            var url = config["OpenAi:Url"];
+            if (string.IsNullOrEmpty(url)) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("URL cannot have a null value.");
+                return;
+            }
 
-                if (result.Success
-                    && result.SuccessModel != null
-                    && result.SuccessModel.Choices?.Count() > 0
-                    )
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Tokens:  {result.SuccessModel.Usage?.CompletionTokens}");
-                    Console.WriteLine(result.SuccessModel.Choices[0].Text);
-                }
-                else {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR: Status={result.StatusCode}");
-                }
+            var apikey = config["OpenAi:ApiKey"];
+            if (string.IsNullOrEmpty(apikey)) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ApiKey missing");
+                return;
+            }
+
+            var result = await service.SendMessageAsync(message, url, apikey);
+
+            if (result.Success
+                && result.SuccessModel != null
+                && result.SuccessModel.Choices?.Count() > 0
+                ) {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Tokens:  {result.SuccessModel.Usage?.CompletionTokens}");
+                Console.WriteLine(result.SuccessModel.Choices[0].Text);
+            }
+            else {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"ERROR: Status={result.StatusCode}");
             }
         }
     }

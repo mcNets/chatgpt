@@ -5,10 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace ChatGpt;
 
-internal class OpenAIService : IOpenAIService
-{
-    public async Task<CompletionResult> SendMessageAsync(CompletionModel question, string url, string apiKey)
-    {
+internal class OpenAIService : IOpenAIService {
+    public async Task<CompletionResult> SendMessageAsync(CompletionModel question, string url, string apiKey) {
         using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 
@@ -19,8 +17,7 @@ internal class OpenAIService : IOpenAIService
 
         var completionResult = new CompletionResult();
 
-        try
-        {
+        try {
             var requestBody = JsonSerializer.Serialize(question, options);
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
@@ -30,22 +27,18 @@ internal class OpenAIService : IOpenAIService
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode == false)
-            {
+            if (response.IsSuccessStatusCode == false) {
                 completionResult.Success = false;
-                if (responseBody != null)
-                {
+                if (responseBody != null) {
                     completionResult.ErrorModel = JsonSerializer.Deserialize<CompletionErrorModel>(responseBody, options);
                 }
             }
-            else
-            {
+            else {
                 completionResult.Success = true;
                 completionResult.SuccessModel = JsonSerializer.Deserialize<CompletionSuccessModel>(responseBody, options);
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Debug.WriteLine($"ERROR: {e.Message}");
             completionResult.Success = false;
         }

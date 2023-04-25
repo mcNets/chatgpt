@@ -2,8 +2,7 @@
 
 namespace ChatGpt;
 
-internal class CompletionSuccessModel
-{
+internal class CompletionSuccessModel {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
@@ -23,29 +22,27 @@ internal class CompletionSuccessModel
     public CompletionUsage? Usage { get; set; }
 }
 
-public class CompletionUsage
-{
+public class CompletionUsage {
     [JsonPropertyName("prompt_tokens")]
     public int PromptTokens { get; set; }
 
-    [JsonPropertyName("completion_tokens")] 
+    [JsonPropertyName("completion_tokens")]
     public int CompletionTokens { get; set; }
 
-    [JsonPropertyName("total_tokens")] 
+    [JsonPropertyName("total_tokens")]
     public int TotalTokens { get; set; }
 }
 
-public class CompletionChoice
-{
-    [JsonPropertyName("text")] 
+public class CompletionChoice {
+    [JsonPropertyName("text")]
     public string? Text { get; set; }
 
-    [JsonPropertyName("index")] 
+    [JsonPropertyName("index")]
     public int Index { get; set; }
 
-    [JsonPropertyName("logprobs")] 
+    [JsonPropertyName("logprobs")]
     public object? LogProbs { get; set; }
 
-    [JsonPropertyName("finish_reason")] 
+    [JsonPropertyName("finish_reason")]
     public string? FinishReason { get; set; }
 }
