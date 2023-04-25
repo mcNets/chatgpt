@@ -1,4 +1,4 @@
-This project requires a appsettings.json file with this information:
+This project requires an appsettings.json file with this information:
 
 ```json
 {
