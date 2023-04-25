@@ -4,7 +4,7 @@ This project requires a appsettings.json file with this information:
 {
   "OpenAI": {
     "Url": "https://api.openai.com/v1/completions",
-    "ApiKey": "<YourApiKe>"
+    "ApiKey": "<YourApiKey>"
   }
 }
 ```
